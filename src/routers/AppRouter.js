@@ -11,7 +11,7 @@ export const AppRouter = () => {
         <Routes>
             <Route path='/' element={<CalendarScreen />}/>
             <Route path='/login' element={<LoginScreen />}/>
-            <Route patch='/*' element={<CalendarScreen />}/>
+            <Route path='/*' element={<CalendarScreen />}/>
         </Routes>
     
     </BrowserRouter>
