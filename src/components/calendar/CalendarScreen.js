@@ -6,6 +6,9 @@ import moment from 'moment'
 import { Navbar } from '../ui/Navbar'
 import { CalendarEvent } from './CalendarEvent'
 import { CalendarModal } from './CalendarModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { uiOpenModal } from '../../actions/ui'
+
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
@@ -27,12 +30,15 @@ export const CalendarScreen = () => {
 
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month')
 
-  const onDoubleClick = (e) => {
-    console.log(e)
+  const {modalOpen} = useSelector(state => state.ui)
+  const dispatch = useDispatch()
+
+  const onDoubleClick = (e) => { 
+    dispatch(uiOpenModal())
   }
 
   const onSelectEvent = (e) => {
-    console.log(e)
+    // console.log(e)
   }
 
   const onViewChange = (e) => {
