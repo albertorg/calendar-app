@@ -5,7 +5,7 @@ import moment from 'moment';
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew, eventCleanActiveNote } from '../../actions/events';
+import { eventAddNew, eventCleanActiveNote, eventUpdated } from '../../actions/events';
 
 const customStyles = {
     content: {
@@ -45,7 +45,11 @@ export const CalendarModal = () => {
 
     useEffect(() => {
       
-        if (activeEvent) setFormValues(activeEvent)
+        if (activeEvent) {
+            setFormValues(activeEvent)
+        }else {
+            setFormValues(initEvent)
+        } 
 
     }, [activeEvent])
     
@@ -100,16 +104,20 @@ export const CalendarModal = () => {
         }
 
         //TODO: Make fetch to database and check if we are updating or saving a newone
-        dispatch(eventAddNew(
-            {
-                ...formValues,
-                id: new Date().getTime(),
-                user: {
-                    _id: '123',
-                    name: 'Fernando'
+        if (activeEvent){
+            dispatch(eventUpdated(formValues))
+        }else {
+            dispatch(eventAddNew(
+                {
+                    ...formValues,
+                    id: new Date().getTime(),
+                    user: {
+                        _id: '123',
+                        name: 'Fernando'
+                    }
                 }
-            }
-        ))
+            ))
+        }    
 
         setTitleValid(true)
         closeModal()
@@ -125,7 +133,7 @@ export const CalendarModal = () => {
             className='modal'
             overlayClassName='modal-fondo'
         >
-            <h1> Nuevo evento </h1>
+            <h1> {(activeEvent) ? 'Edit event': 'New event'} </h1>
             <hr />
             <form className="container"
                 onSubmit={handleSubmitForm}
